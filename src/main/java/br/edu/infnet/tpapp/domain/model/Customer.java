@@ -9,13 +9,11 @@ public class Customer {
 	private String name;
 	private String document;
 	private String email;
+	private LocalDate birthday;
 	private LocalDate createdAt = LocalDate.now();
 	private boolean active = false;
 
-
-
 	public Customer() {};
-	
 	
 	public Customer(int id, String name, String document, String email) {
 		super();
@@ -42,39 +40,59 @@ public class Customer {
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getDocument() {
 		return document;
 	}
+	
 	public void setDocument(String document) {
 		this.document = document;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public boolean isActive() {
 		return active;
 	}
+	
 	private void setActive(boolean status) {
 		this.active = status;
 	}
+	
+	public String getBirthday() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return this.birthday.format(formatter);
+	}
+	
+	public void setBirthday(String date) {
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+         this.birthday = LocalDate.parse(date,formatter);
+	}
+	
 	public String getCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return this.createdAt.format(formatter);
 	}
+	
 	public void setCreatedAt(String date) {
-//		 String date = "02/08/2021";
          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
          this.createdAt = LocalDate.parse(date,formatter);
 	}
