@@ -15,12 +15,14 @@ public class Customer {
 
 	public Customer() {};
 	
-	public Customer(int id, String name, String document, String email) {
+	public Customer(int id, String name, String document, String email, String birthday) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.document = document;
 		this.email = email;
+		this.setBirthday(birthday);
+		this.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 	}
 
 	public void activate() {
@@ -35,6 +37,21 @@ public class Customer {
 		if (LocalDate.now().minusMonths(12).isAfter(createdAt)) return "Elite";
 		if (LocalDate.now().minusMonths(6).isAfter(createdAt)) return "Premium";
 		return "Basic";
+	}
+	
+	@Override
+	public String toString() {
+		return String.join(
+				";",
+				String.valueOf(this.getId()),
+				this.getName(),
+				this.getDocument(),
+				this.getEmail(),
+				this.getBirthday(),
+				this.getCreatedAt(),
+				this.getRank(),
+				String.valueOf(this.isActive())
+				);
 	}
 
 	public int getId() {

@@ -1,5 +1,8 @@
 package br.edu.infnet.tpapp;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -12,15 +15,27 @@ public class CustomerTest implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		
-		Customer customer1 = new Customer(1, "Charles Lima", "1234567890", "cl@ecomp.com");
-		customer1.activate();
+		// Creates a Customer instance
+		Customer customer = new Customer(1, "Charles Lima", "1234567890", "cl@ecomp.com", "1990-01-01");
+		System.out.println(customer);
+		// Activate the customer account
+		customer.activate();
+		System.out.println(customer);
+		// Deactivate the customer account
+		customer.deactivate();
+		System.out.println(customer);
 		
-		Customer customer2 = new Customer();
-		customer2.setId(1);
-		customer2.setName("Elberth");
-		customer2.setDocument("0987654321");
-		customer2.setEmail("em@ecomp.com");
-		customer2.activate();
+		DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		// Set the creation date to 2 months earlier
+		customer.setCreatedAt(LocalDate.now().minusMonths(2).format(dateformatter));
+		System.out.println(customer.getRank());
+		// Set the creation date to 7 months before
+		customer.setCreatedAt(LocalDate.now().minusMonths(7).format(dateformatter));
+		System.out.println(customer.getRank());
+		// Set the creation date to 13 months before
+		customer.setCreatedAt(LocalDate.now().minusMonths(13).format(dateformatter));
+		System.out.println(customer.getRank());
 		
 	}
 
