@@ -1,7 +1,10 @@
 package br.edu.infnet.tpapp.domain.model;
 
+import br.edu.infnet.tpapp.util.Constants;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.EnumSet;
 
 public class Customer {
 	
@@ -11,12 +14,11 @@ public class Customer {
 	private String email;
 	private LocalDate birthday;
 	private LocalDate createdAt = LocalDate.now();
-	private boolean active = false;
+	private boolean active = true;
 
 	public Customer() {};
 	
 	public Customer(int id, String name, String document, String email, String birthday) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.document = document;
@@ -32,26 +34,22 @@ public class Customer {
 	public void deactivate() {
 		this.setActive(false);
 	}
-	
-	public String getRank() {
-		if (LocalDate.now().minusMonths(12).isAfter(createdAt)) return "Elite";
-		if (LocalDate.now().minusMonths(6).isAfter(createdAt)) return "Premium";
-		return "Basic";
-	}
-	
-	@Override
-	public String toString() {
-		return String.join(
-				";",
-				String.valueOf(this.getId()),
-				this.getName(),
-				this.getDocument(),
-				this.getEmail(),
-				this.getBirthday(),
-				this.getCreatedAt(),
-				this.getRank(),
-				String.valueOf(this.isActive())
-				);
+
+	public CustomerRank calculateRank() {
+		if (LocalDate.now().minusMonths(12).isAfter(createdAt))
+			return new CustomerRank(
+					Constants.CustomerRank.Level3.NAME,
+					Constants.CustomerRank.Level3.DISCOUNT_TX
+			);
+		if (LocalDate.now().minusMonths(6).isAfter(createdAt))
+			return new CustomerRank(
+					Constants.CustomerRank.Level2.NAME,
+					Constants.CustomerRank.Level2.DISCOUNT_TX
+			);
+		return new CustomerRank(
+				Constants.CustomerRank.Level1.NAME,
+				Constants.CustomerRank.Level1.DISCOUNT_TX
+		);
 	}
 
 	public int getId() {
@@ -97,6 +95,10 @@ public class Customer {
 	public String getBirthday() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return this.birthday.format(formatter);
+	}
+
+	public CustomerRank getRank() {
+		return this.calculateRank();
 	}
 	
 	public void setBirthday(String date) {

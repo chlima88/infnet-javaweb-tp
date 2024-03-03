@@ -1,18 +1,19 @@
-package br.edu.infnet.tpapp;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+package br.edu.infnet.tpapp.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import br.edu.infnet.tpapp.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import br.edu.infnet.tpapp.domain.model.Customer;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
-class TpappApplicationTests {
+class CustomerTests {
 	
 	private Customer customer;
     DateTimeFormatter formatter;
@@ -42,7 +43,7 @@ class TpappApplicationTests {
 	}
 
 	@Test
-	void shoudHaveAValidCreatedAtValue() {
+	void shouldHaveAValidCreatedAtValue() {
 		assertEquals(LocalDate.now().format(formatter), customer.getCreatedAt());
 	}
 	
@@ -53,7 +54,8 @@ class TpappApplicationTests {
 		String date = LocalDate.now().minusMonths(13).format(formatter);
 		customer.setCreatedAt(date);
 		
-		assertEquals("Elite", customer.getRank());
+		assertEquals(Constants.CustomerRank.Level3.NAME, customer.getRank().getName());
+		assertEquals(Constants.CustomerRank.Level3.DISCOUNT_TX, customer.getRank().getDiscount());
 	}
 	
 	@Test 
@@ -63,7 +65,8 @@ class TpappApplicationTests {
 		String date = LocalDate.now().minusMonths(7).format(formatter);
 		customer.setCreatedAt(date);
 		
-		assertEquals("Premium", customer.getRank());
+		assertEquals(Constants.CustomerRank.Level2.NAME, customer.getRank().getName());
+		assertEquals(Constants.CustomerRank.Level2.DISCOUNT_TX, customer.getRank().getDiscount());
 	}
 	
 	@Test 
@@ -73,22 +76,24 @@ class TpappApplicationTests {
 		String date = LocalDate.now().minusMonths(5).format(formatter);
 		customer.setCreatedAt(date);
 		
-		assertEquals("Basic", customer.getRank());
+		assertEquals(Constants.CustomerRank.Level1.NAME, customer.getRank().getName());
+		assertEquals(Constants.CustomerRank.Level1.DISCOUNT_TX, customer.getRank().getDiscount());
 	}
 	
 	@Test
 	void shouldBeAbleToActivateTheCustomer() {
+		customer.deactivate();
 		customer.activate();
-		
-		assertEquals(true, customer.isActive());
+
+		assertTrue(customer.isActive());
 	}
 	
 	@Test
 	void shouldBeAbleToDeactivateTheCustomer() {
 		customer.activate();
 		customer.deactivate();
-		
-		assertEquals(false, customer.isActive());
+
+		assertFalse(customer.isActive());
 	}
 
 }
