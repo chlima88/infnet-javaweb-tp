@@ -17,7 +17,7 @@ public class ProductServiceTest {
     
     @BeforeEach
     void setUp() {
-        product = new Product(1, "Wireless Mouse", "Microsoft", "1850", 79);
+        product = new Product(1, "Microsoft 1850 Wireless Mouse", "Technology", "Your next Wireless Mouse", 79);
         productService = new ProductService();
     }
 
@@ -47,7 +47,7 @@ public class ProductServiceTest {
     @Test
     void shouldBeAbleToRetrieveAProductList() {
         productService.add(product);
-        Product product2 = new Product(2, "Lava e Seca", "WD13T", "Samsung", 4769.10f);
+        Product product2 = new Product(2, "Washer Dryer Samsung WD13T", "White goods", "Enjoy more effective washing with AI Ecobubble™", 4769.10f);
         productService.add(product2);
 
         assertEquals(2,productService.list().size());

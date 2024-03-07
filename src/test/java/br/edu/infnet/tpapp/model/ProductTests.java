@@ -24,15 +24,15 @@ class ProductTests {
 	@Test
 	void shouldBeAbleToSetAttributesInTheObject() {		
 		product.setId(1);
-		product.setName("Wireless Mouse");
-		product.setBrand("Microsoft");
-		product.setModel("1850");
+		product.setTitle("Microsoft 1850 Wireless Mouse");
+		product.setCategory("Technology");
+		product.setDescription("Your next Wireless Mouse");
 		product.setPrice(79);
 		
 		assertEquals(1, product.getId());
-		assertEquals("Wireless Mouse", product.getName());
-		assertEquals("Microsoft", product.getBrand());
-		assertEquals("1850", product.getModel());
+		assertEquals("Microsoft 1850 Wireless Mouse", product.getTitle());
+		assertEquals("Technology", product.getCategory());
+		assertEquals("Your next Wireless Mouse", product.getDescription());
 		assertEquals(79, product.getPrice());
 	}
 
