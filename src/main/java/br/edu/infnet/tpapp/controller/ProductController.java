@@ -26,7 +26,7 @@ public class ProductController {
         return this.productService.get(id);
     }
 
-    @GetMapping(value = "/")
+    @GetMapping
     public Collection<Product> listProducts() {
         return this.productService.list();
     }
