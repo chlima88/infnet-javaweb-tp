@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 
-public class Customer {
+public class Customer extends BaseEntity {
 	
 	private int id;
 	private String name;
@@ -52,6 +52,7 @@ public class Customer {
 		);
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}

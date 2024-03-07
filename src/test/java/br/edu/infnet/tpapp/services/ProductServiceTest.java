@@ -1,7 +1,9 @@
 package br.edu.infnet.tpapp.services;
 
 import br.edu.infnet.tpapp.domain.model.Product;
-import br.edu.infnet.tpapp.domain.model.Product;
+import br.edu.infnet.tpapp.repository.GenericRepository;
+import br.edu.infnet.tpapp.repository.IRepository;
+import br.edu.infnet.tpapp.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,14 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ProductServiceTest {
-    
+
     private Product product;
     private ProductService productService;
-    
+
     @BeforeEach
     void setUp() {
         product = new Product(1, "Microsoft 1850 Wireless Mouse", "Technology", "Your next Wireless Mouse", 79);
-        productService = new ProductService();
+        IRepository<Product> productRepository = new GenericRepository<>();
+        productService = new ProductService(productRepository);
     }
 
 

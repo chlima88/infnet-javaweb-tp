@@ -7,7 +7,7 @@ import br.edu.infnet.tpapp.util.Constants;
 import java.util.List;
 import java.util.Objects;
 
-public class Purchase  {
+public class Purchase extends BaseEntity {
 
     private int id;
     private Customer customer;
@@ -31,6 +31,7 @@ public class Purchase  {
 
     }
 
+    @Override
     public int getId() {
         return id;
     }

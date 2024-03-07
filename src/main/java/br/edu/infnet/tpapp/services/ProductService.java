@@ -1,32 +1,35 @@
 package br.edu.infnet.tpapp.services;
 
 import br.edu.infnet.tpapp.domain.model.Product;
+import br.edu.infnet.tpapp.repository.IRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
+@Service
 public class ProductService {
 
-    private final Map<Integer, Product> productsDb;
+    private final IRepository<Product> productRepository;
 
-    public ProductService() {
-        this.productsDb = new HashMap<>();
-    };
+    @Autowired
+    public ProductService(IRepository<Product> productRepository){
+        this.productRepository = productRepository;
+    }
 
     public void add(Product product) {
-        this.productsDb.put(product.getId(), product);
-    };
+        this.productRepository.add(product);
+    }
 
     public Product get(int productId) {
-        return this.productsDb.get(productId);
-    };
+        return this.productRepository.get(productId);
+    }
 
     public void remove(int productId) {
-        this.productsDb.remove(productId);
-    };
+        this.productRepository.remove(productId);
+    }
 
     public Collection<Product> list() {
-        return productsDb.values();
-    };
+        return this.productRepository.list();
+    }
 }

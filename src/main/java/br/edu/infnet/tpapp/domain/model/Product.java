@@ -1,6 +1,6 @@
 package br.edu.infnet.tpapp.domain.model;
 
-public class Product {
+public class Product extends BaseEntity {
 
 	private int id;
 	private String title;
@@ -30,6 +30,7 @@ public class Product {
 		this.setActive(false);
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}
