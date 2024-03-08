@@ -5,8 +5,12 @@ import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.exceptions.InvalidProductException;
+import br.edu.infnet.tpapp.repository.CustomerRepository;
+import br.edu.infnet.tpapp.repository.GenericRepository;
+import br.edu.infnet.tpapp.repository.IRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -20,6 +24,7 @@ public class PurchaseServiceTest {
     private Purchase purchase;
     private Product product;
     private Customer customer;
+    @Autowired
     private PurchaseService purchaseService;
     
     @BeforeEach
@@ -30,19 +35,18 @@ public class PurchaseServiceTest {
         purchase.setId(1);
         purchase.setCustomer(customer);
         purchase.setProducts(List.of(product));
-        purchaseService = new PurchaseService();
     }
 
 
     @Test
-    void shouldCreateAPurchase() {
+    void shouldCreateAPurchase() throws Exception {
         purchaseService.add(purchase);
 
         assertTrue(purchaseService.list().contains(purchase));
     }
 
     @Test
-    void shouldRemoveAPurchase() {
+    void shouldRemoveAPurchase() throws Exception {
         purchaseService.add(purchase);
         purchaseService.remove(purchase.getId());
 
@@ -50,14 +54,14 @@ public class PurchaseServiceTest {
     }
 
     @Test
-    void shouldRetrieveAPurchase() {
+    void shouldRetrieveAPurchase() throws Exception {
         purchaseService.add(purchase);
 
         assertEquals(purchase, purchaseService.get(purchase.getId()));
     }
 
     @Test
-    void shouldBeAbleToRetrieveAPurchaseList() {
+    void shouldBeAbleToRetrieveAPurchaseList() throws Exception {
         purchaseService.add(purchase);
         Purchase purchase2 = new Purchase(2, customer, List.of(product));
         purchaseService.add(purchase2);

@@ -2,12 +2,10 @@ package br.edu.infnet.tpapp.domain.model;
 
 import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.exceptions.InvalidProductException;
-import br.edu.infnet.tpapp.util.Constants;
 
 import java.util.List;
-import java.util.Objects;
 
-public class Purchase extends BaseEntity {
+public class Purchase extends BaseEntity<Purchase> {
 
     private int id;
     private Customer customer;
@@ -27,7 +25,7 @@ public class Purchase extends BaseEntity {
             finalprice = finalprice + product.getPrice();
         }
 
-        return finalprice * (1 - this.customer.getRank().getDiscount());
+        return finalprice * (1 - this.customer.getRank().discount());
 
     }
 
@@ -60,5 +58,9 @@ public class Purchase extends BaseEntity {
         this.products = products;
     }
 
-
+    @Override
+    public int compareTo(Purchase other) {
+        if(other.getId() == this.getId()) return 0;
+        return 1;
+    }
 }

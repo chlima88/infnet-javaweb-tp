@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collection;
 
-@Repository
+
 @FeignClient(url = "https://fakestoreapi.com/products", name = "FakeStoreAPI")
 public interface ProductRepository extends IRepository<Product> {
 

@@ -6,14 +6,9 @@ import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.exceptions.InvalidProductException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,7 +66,7 @@ class PurchaseTests {
 		assertEquals(
 				(float) purchase.getProducts().stream()
 						.mapToDouble(Product::getPrice).sum() *
-						( 1 - purchase.getCustomer().calculateRank().getDiscount()),
+						( 1 - purchase.getCustomer().calculateRank().discount()),
 				(float) purchase.calculateFinalPrice()
 		);
 

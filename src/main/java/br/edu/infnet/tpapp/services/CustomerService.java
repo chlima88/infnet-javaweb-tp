@@ -1,30 +1,21 @@
 package br.edu.infnet.tpapp.services;
 
 import br.edu.infnet.tpapp.domain.model.Customer;
+import br.edu.infnet.tpapp.repository.CustomerRepository;
+import br.edu.infnet.tpapp.repository.IRepository;
+import br.edu.infnet.tpapp.repository.PurchaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-public class CustomerService {
 
-    private final Map<Integer, Customer> customersDb;
+@Service
+public class CustomerService extends GenericService<Customer> {
 
-    public CustomerService() {
-        this.customersDb = new HashMap<>();
-    };
-
-    public void add(Customer customer) {
-        this.customersDb.put(customer.getId(), customer);
-    };
-
-    public Customer get(int customerId) {
-        return this.customersDb.get(customerId);
-    };
-
-    public void remove(int customerId) {
-        this.customersDb.remove(customerId);
-    };
-
-    public Collection<Customer> list() {
-        return customersDb.values();
-    };
+    @Autowired
+    public CustomerService(CustomerRepository repository) {
+        super(repository);
+    }
 }
+

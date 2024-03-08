@@ -3,6 +3,10 @@ package br.edu.infnet.tpapp.services;
 import java.util.*;
 
 import br.edu.infnet.tpapp.domain.model.Customer;
+import br.edu.infnet.tpapp.repository.CustomerRepository;
+import br.edu.infnet.tpapp.repository.GenericRepository;
+import br.edu.infnet.tpapp.repository.IRepository;
+import br.edu.infnet.tpapp.repository.PurchaseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,18 +24,19 @@ public class CustomerServiceTests {
     void setUp() {
         customer = new Customer(1, "Elberth", "0987654321", "em@ecomp.com", "1990-01-01");
         customer.setCreatedAt("2012-12-20");
-        customerService = new CustomerService();
+        CustomerRepository customerRepository = new CustomerRepository();
+        customerService = new CustomerService(customerRepository);
     }
 
     @Test
-    void shouldCreateACustomer() {
+    void shouldCreateACustomer() throws Exception {
         customerService.add(customer);
 
         assertTrue(customerService.list().contains(customer));
     }
 
     @Test
-    void shouldRemoveACustomer() {
+    void shouldRemoveACustomer() throws Exception {
         customerService.add(customer);
         customerService.remove(customer.getId());
 
@@ -39,14 +44,14 @@ public class CustomerServiceTests {
     }
 
     @Test
-    void shouldRetrieveACustomer() {
+    void shouldRetrieveACustomer() throws Exception {
         customerService.add(customer);
 
         assertEquals(customer, customerService.get(customer.getId()));
     }
 
     @Test
-    void shouldBeAbleToRetrieveACustomerList() {
+    void shouldBeAbleToRetrieveACustomerList() throws Exception {
         customerService.add(customer);
         Customer customer2 = new Customer(2, "Charles", "123", "cl@ecomp.com", "2000-11-11");
         customerService.add(customer2);

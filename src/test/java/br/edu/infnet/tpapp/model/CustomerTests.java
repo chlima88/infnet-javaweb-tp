@@ -54,8 +54,8 @@ class CustomerTests {
 		String date = LocalDate.now().minusMonths(13).format(formatter);
 		customer.setCreatedAt(date);
 		
-		assertEquals(Constants.CustomerRank.Level3.NAME, customer.getRank().getName());
-		assertEquals(Constants.CustomerRank.Level3.DISCOUNT_TX, customer.getRank().getDiscount());
+		assertEquals(Constants.CustomerRank.Level3.NAME, customer.getRank().name());
+		assertEquals(Constants.CustomerRank.Level3.DISCOUNT_TX, customer.getRank().discount());
 	}
 	
 	@Test 
@@ -65,8 +65,8 @@ class CustomerTests {
 		String date = LocalDate.now().minusMonths(7).format(formatter);
 		customer.setCreatedAt(date);
 		
-		assertEquals(Constants.CustomerRank.Level2.NAME, customer.getRank().getName());
-		assertEquals(Constants.CustomerRank.Level2.DISCOUNT_TX, customer.getRank().getDiscount());
+		assertEquals(Constants.CustomerRank.Level2.NAME, customer.getRank().name());
+		assertEquals(Constants.CustomerRank.Level2.DISCOUNT_TX, customer.getRank().discount());
 	}
 	
 	@Test 
@@ -76,8 +76,8 @@ class CustomerTests {
 		String date = LocalDate.now().minusMonths(5).format(formatter);
 		customer.setCreatedAt(date);
 		
-		assertEquals(Constants.CustomerRank.Level1.NAME, customer.getRank().getName());
-		assertEquals(Constants.CustomerRank.Level1.DISCOUNT_TX, customer.getRank().getDiscount());
+		assertEquals(Constants.CustomerRank.Level1.NAME, customer.getRank().name());
+		assertEquals(Constants.CustomerRank.Level1.DISCOUNT_TX, customer.getRank().discount());
 	}
 	
 	@Test

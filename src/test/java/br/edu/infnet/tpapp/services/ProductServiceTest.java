@@ -20,20 +20,20 @@ public class ProductServiceTest {
     @BeforeEach
     void setUp() {
         product = new Product(1, "Microsoft 1850 Wireless Mouse", "Technology", "Your next Wireless Mouse", 79);
-        IRepository<Product> productRepository = new GenericRepository<>();
+        IRepository<Product> productRepository = new ProductRepository() ;
         productService = new ProductService(productRepository);
     }
 
 
     @Test
-    void shouldCreateAProduct() {
+    void shouldCreateAProduct() throws Exception {
         productService.add(product);
 
         assertTrue(productService.list().contains(product));
     }
 
     @Test
-    void shouldRemoveAProduct() {
+    void shouldRemoveAProduct() throws Exception {
         productService.add(product);
         productService.remove(product.getId());
 
@@ -41,14 +41,14 @@ public class ProductServiceTest {
     }
 
     @Test
-    void shouldRetrieveAProduct() {
+    void shouldRetrieveAProduct() throws Exception {
         productService.add(product);
 
         assertEquals(product, productService.get(product.getId()));
     }
 
     @Test
-    void shouldBeAbleToRetrieveAProductList() {
+    void shouldBeAbleToRetrieveAProductList() throws Exception {
         productService.add(product);
         Product product2 = new Product(2, "Washer Dryer Samsung WD13T", "White goods", "Enjoy more effective washing with AI Ecobubble™", 4769.10f);
         productService.add(product2);

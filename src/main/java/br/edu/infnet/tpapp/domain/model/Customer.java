@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity<Customer> {
 	
 	private int id;
 	private String name;
@@ -116,5 +116,11 @@ public class Customer extends BaseEntity {
          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
          this.createdAt = LocalDate.parse(date,formatter);
 	}
-	
+	@Override
+	public int compareTo(Customer customer) {
+		if(customer.getId() == this.getId()) return 0;
+		if(customer.getDocument().equals(this.getDocument())) return 0;
+		if(customer.getEmail().equals(this.getEmail())) return 0;
+		return 1;
+	}
 }

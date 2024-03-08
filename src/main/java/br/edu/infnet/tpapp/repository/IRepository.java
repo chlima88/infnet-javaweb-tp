@@ -7,10 +7,10 @@ import java.util.Collection;
 
 public interface IRepository<T> {
 
-    T get(@PathVariable int id);
+    T get(int id) throws Exception;
 
     Collection<T> list();
 
-    void add(T product);
-    void remove(int productId);
+    void add(T product) throws Exception;
+    void remove(int productId) throws Exception;
 }
