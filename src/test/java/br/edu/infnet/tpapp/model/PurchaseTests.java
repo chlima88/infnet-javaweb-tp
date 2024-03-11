@@ -6,6 +6,7 @@ import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.exceptions.InvalidProductException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -29,7 +30,8 @@ class PurchaseTests {
 	}
 
 	@Test
-	void shouldBeAbleToSetAttributesInTheObject() throws InvalidProductException, InvalidCustomerException {
+	@DisplayName("Should be able to set attributes in the objects")
+	void shouldSetAttributesInTheObject() throws InvalidProductException, InvalidCustomerException {
 		purchase.setId(1);
 		purchase.setCustomer(customer);
 		purchase.setProducts(List.of(product));
@@ -40,7 +42,8 @@ class PurchaseTests {
 	}
 
 	@Test
-	void shouldNotBeAbleToAddDeactivatedProductsToThePurchase() throws InvalidCustomerException {
+	@DisplayName("Should throw exception when adding deactivated produtcts to the purchase")
+	void shouldNotAddDeactivatedProductsToThePurchase() throws InvalidCustomerException {
 		purchase.setId(1);
 		purchase.setCustomer(customer);
 		product.deactivate();
@@ -49,7 +52,8 @@ class PurchaseTests {
 	}
 
 	@Test
-	void shouldNotBeAbleToAddDeactivatedCustomersToThePurchase() throws InvalidProductException {
+	@DisplayName("Should throw error when adding deactivated customer to the purchase")
+	void shouldNotAddDeactivatedCustomersToThePurchase() throws InvalidProductException {
 		purchase.setId(1);
 		purchase.setProducts(List.of(product));
 		customer.deactivate();
@@ -58,7 +62,8 @@ class PurchaseTests {
 	}
 
 	@Test
-	void shouldBeAbleToCalculateThePurchaseFinalPrice() throws InvalidProductException, InvalidCustomerException{
+	@DisplayName("Should calculate the purchase final price")
+	void shouldCalculateThePurchaseFinalPrice() throws InvalidProductException, InvalidCustomerException{
 		purchase.setId(1);
 		purchase.setCustomer(customer);
 		purchase.setProducts(List.of(product,product));

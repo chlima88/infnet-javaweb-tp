@@ -6,6 +6,7 @@ import br.edu.infnet.tpapp.repository.IRepository;
 import br.edu.infnet.tpapp.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,10 +18,11 @@ public class ProductServiceTest {
     private Product product;
     private ProductService productService;
 
+
     @BeforeEach
     void setUp() {
         product = new Product(1, "Microsoft 1850 Wireless Mouse", "Technology", "Your next Wireless Mouse", 79);
-        IRepository<Product> productRepository = new ProductRepository() ;
+        IRepository<Product> productRepository = new GenericRepository<>();
         productService = new ProductService(productRepository);
     }
 
@@ -48,7 +50,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    void shouldBeAbleToRetrieveAProductList() throws Exception {
+    void shouldRetrieveAProductList() throws Exception {
         productService.add(product);
         Product product2 = new Product(2, "Washer Dryer Samsung WD13T", "White goods", "Enjoy more effective washing with AI Ecobubble™", 4769.10f);
         productService.add(product2);

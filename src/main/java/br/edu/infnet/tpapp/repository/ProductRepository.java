@@ -10,20 +10,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collection;
+import java.util.Optional;
 
 
+@Repository
 @FeignClient(url = "https://fakestoreapi.com/products", name = "FakeStoreAPI")
 public interface ProductRepository extends IRepository<Product> {
 
     @GetMapping(value = "/{id}")
-    Product get(@PathVariable int id);
+    Optional<Product> get(@PathVariable int id);
 
-    @GetMapping(value = "/")
+    @GetMapping
     Collection<Product> list();
 
     @PostMapping
     void add(Product product);
 
-    @DeleteMapping
-    void remove(int productId);
+    @DeleteMapping(value = "/{id}")
+    void remove(@PathVariable int id);
 }

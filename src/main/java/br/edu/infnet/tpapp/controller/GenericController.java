@@ -7,9 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 
-
-
-public class GenericController<T extends BaseEntity<T>> implements IController<T> {
+public abstract class GenericController<T extends BaseEntity<T>> implements IController<T> {
 
     protected final IService<T> service;
 

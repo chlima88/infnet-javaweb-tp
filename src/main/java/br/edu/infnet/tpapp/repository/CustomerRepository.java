@@ -1,17 +1,43 @@
 package br.edu.infnet.tpapp.repository;
 
-import br.edu.infnet.tpapp.domain.model.BaseEntity;
 import br.edu.infnet.tpapp.domain.model.Customer;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
-public class CustomerRepository extends GenericRepository<Customer> {
-    public CustomerRepository(){
-        super();
+public class CustomerRepository implements IRepository<Customer> {
+
+    private final Map<Integer, Customer> itemsDb;
+
+    public CustomerRepository() {
+        this.itemsDb = new HashMap<>();
     }
 
+    @Override
+    public void add(Customer item)  {
+        this.itemsDb.put(item.getId(), item);
+    }
+
+    @Override
+    public Optional<Customer> get(int itemId)  {
+        return Optional.ofNullable(this.itemsDb.get(itemId));
+    }
+
+    @Override
+    public void remove(int itemId) {
+        this.itemsDb.remove(itemId);
+    }
+
+    @Override
+    public Collection<Customer> list() {
+        return this.itemsDb.values();
+    }
+
+    public void update(Customer customer) {
+        this.itemsDb.replace(customer.getId(), customer);
+    }
 }

@@ -1,12 +1,12 @@
 package br.edu.infnet.tpapp.repository;
 
 import br.edu.infnet.tpapp.domain.model.BaseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class GenericRepository<T extends BaseEntity<T>> implements IRepository<T> {
@@ -16,28 +16,20 @@ public class GenericRepository<T extends BaseEntity<T>> implements IRepository<T
         this.itemsDb = new HashMap<>();
     }
 
-    public void add(T item) throws Exception {
-        if (this.itemsDb.values().stream().anyMatch(savedItem -> savedItem.compareTo(item) == 0 )) {
-            throw new Exception("Can't create a new entry. Invalid data");
-        }
+    public void add(T item) {
         this.itemsDb.put(item.getId(), item);
-    };
+    }
 
-    public T get(int itemId) throws Exception {
-        if (this.itemsDb.containsKey(itemId))
-            return this.itemsDb.get(itemId);
-        else
-            throw new Exception("Id not found");
-    };
+    public Optional<T> get(int itemId)  {
+        return Optional.ofNullable(this.itemsDb.get(itemId));
+    }
 
-    public void remove(int itemId) throws Exception {
-        if (!this.itemsDb.containsKey(itemId))
-            throw new Exception("Id not found");
+    public void remove(int itemId) {
         this.itemsDb.remove(itemId);
-    };
+    }
 
     public Collection<T> list() {
         return this.itemsDb.values();
-    };
+    }
 
 }

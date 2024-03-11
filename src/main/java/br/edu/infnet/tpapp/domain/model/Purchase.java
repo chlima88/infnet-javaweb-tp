@@ -4,14 +4,15 @@ import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.exceptions.InvalidProductException;
 
 import java.util.List;
+import java.util.Objects;
 
-public class Purchase extends BaseEntity<Purchase> {
+public class Purchase  {
 
     private int id;
     private Customer customer;
     private List<Product> products;
 
-    public Purchase() {};
+    public Purchase() {}
 
     public Purchase(int id, Customer customer, List<Product> products) {
         this.id = id;
@@ -24,12 +25,8 @@ public class Purchase extends BaseEntity<Purchase> {
         for (Product product : products) {
             finalprice = finalprice + product.getPrice();
         }
-
         return finalprice * (1 - this.customer.getRank().discount());
-
     }
-
-    @Override
     public int getId() {
         return id;
     }
@@ -59,8 +56,21 @@ public class Purchase extends BaseEntity<Purchase> {
     }
 
     @Override
-    public int compareTo(Purchase other) {
-        if(other.getId() == this.getId()) return 0;
-        return 1;
+    public String toString() {
+        return "Purchase{" +
+                "id=" + id +
+                ", customer=" + customer +
+                ", products=" + products +
+                '}';
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Purchase purchase)) return false;
+        return this.getId() == purchase.getId()
+                && Objects.equals(this.getCustomer(), purchase.getCustomer())
+                && Objects.equals(this.getProducts(), purchase.getProducts());
+    }
+
 }

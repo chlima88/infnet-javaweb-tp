@@ -13,20 +13,26 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(value="/purchases")
-public class PurchaseController  {
+public class PurchaseController {
+
+    PurchaseService purchaseService;
 
     @Autowired
-    PurchaseService service;
+    PurchaseController(PurchaseService purchaseService){
+        this.purchaseService = purchaseService;
+    }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public void add(@RequestBody PurchaseDTO data) {
         try {
-            this.service.add(data);
+            this.purchaseService.add(data);
         } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    error.getMessage(),
+                    error);
         }
     }
 
@@ -35,9 +41,12 @@ public class PurchaseController  {
     @ResponseBody
     public Collection<Purchase> list() {
         try {
-            return this.service.list();
+            return this.purchaseService.list();
         } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    error.getMessage(),
+                    error);
         }
     }
 
@@ -46,21 +55,25 @@ public class PurchaseController  {
     @ResponseBody
     public Purchase get(@PathVariable int id) {
         try {
-            return this.service.get(id);
+            return this.purchaseService.get(id);
         } catch (Exception error) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    error.getMessage(),
+                    error);
         }
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public void delete(@PathVariable int id) {
         try {
-            this.service.remove(id);
+            this.purchaseService.remove(id);
         } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    error.getMessage(),
+                    error);
         }
-
     }
 }

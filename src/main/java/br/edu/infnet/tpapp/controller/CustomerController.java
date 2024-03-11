@@ -11,58 +11,86 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(value="/customers", produces = "application/json")
-public class CustomerController {
+@RequestMapping(value="/customers")
+public class CustomerController implements IController<Customer> {
 
-    CustomerService service;
+    CustomerService customerService;
     @Autowired
     CustomerController(CustomerService service) {
-        this.service = service;
+        this.customerService = service;
     }
 
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
+    @Override
     public void add(@RequestBody Customer data) {
         try {
-            this.service.add(data);
+            this.customerService.add(data);
         } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    error.getMessage(),
+                    error);
         }
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
+    @Override
     public Collection<Customer> list() {
         try {
-            return this.service.list();
+            return this.customerService.list();
         } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    error.getMessage(),
+                    error);
         }
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
+    @Override
     public Customer get(@PathVariable int id) {
         try {
-            return this.service.get(id);
+            return this.customerService.get(id);
         } catch (Exception error) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    error.getMessage(),
+                    error);
         }
     }
 
-    @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
+    @Override
     public void delete(@PathVariable int id) {
         try {
-            this.service.remove(id);
+            this.customerService.remove(id);
         } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage(), error);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    error.getMessage(),
+                    error);
         }
+    }
 
+    @PostMapping(value = "/{id}/deactivate")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void disable(@PathVariable int id) {
+        try {
+            this.customerService.deactivate(id);
+        } catch(Exception error) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    error.getMessage(),
+                    error);
+        }
+    }
+
+    @PostMapping(value = "/{id}/activate")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void enable(@PathVariable int id) {
+        try {
+            this.customerService.activate(id);
+        } catch(Exception error) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    error.getMessage(),
+                    error);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package br.edu.infnet.tpapp.domain.model;
 
-public class Product extends BaseEntity<Product> {
+import java.util.Objects;
+
+public class Product extends  BaseEntity<Product> {
 
 	private int id;
 	private String title;
@@ -10,8 +12,8 @@ public class Product extends BaseEntity<Product> {
 	private boolean active;
 
 	public Product(){
-		this.active = false;
-	};
+		this.active = true;
+	}
 
 	public Product(int id, String title, String category, String description, float price) {
 		this.id = id;
@@ -30,7 +32,6 @@ public class Product extends BaseEntity<Product> {
 		this.setActive(false);
 	}
 
-	@Override
 	public int getId() {
 		return id;
 	}
@@ -80,8 +81,36 @@ public class Product extends BaseEntity<Product> {
 	}
 
 	@Override
-	public int compareTo(Product other) {
-		if(other.getId() == this.getId()) return 0;
-		return 1;
+	public boolean compareTo(Product other) throws Exception {
+		if(other.getId() == this.getId())
+			throw new Exception("ProductId already in use");
+		if(other.getTitle().equalsIgnoreCase(this.getTitle()))
+			throw new Exception("Product Title already in use");
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "Product{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", category='" + category + '\'' +
+				", description='" + description + '\'' +
+				", price=" + price +
+				", active=" + active +
+				"} ";
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) return true;
+		if (other == null || this.getClass() != other.getClass()) return false;
+		Product product = (Product) other;
+		return this.getId() == product.getId()
+				&& Float.compare(this.getPrice(), product.getPrice()) == 0
+				&& this.isActive() == product.isActive()
+				&& Objects.equals(this.getTitle(), product.getTitle())
+				&& Objects.equals(this.getCategory(), product.getCategory())
+				&& Objects.equals(this.getDescription(), product.getDescription());
 	}
 }

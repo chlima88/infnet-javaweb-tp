@@ -1,12 +1,40 @@
 package br.edu.infnet.tpapp.repository;
 
-import br.edu.infnet.tpapp.domain.model.Customer;
+import br.edu.infnet.tpapp.dtos.PurchaseDTO;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 @Repository
-public class PurchaseRepository extends GenericRepository<Customer> {
+public class PurchaseRepository implements IRepository<PurchaseDTO> {
+
+    private final Map<Integer, PurchaseDTO> itemsDb;
+
     public PurchaseRepository(){
-        super();
+        this.itemsDb = new HashMap<>();
+    }
+
+    @Override
+    public void add(PurchaseDTO item) {
+        this.itemsDb.put(item.getId(), item);
+    }
+
+    @Override
+    public Optional<PurchaseDTO> get(int itemId) {
+            return Optional.ofNullable(this.itemsDb.get(itemId));
+    }
+
+    @Override
+    public void remove(int itemId) {
+        this.itemsDb.remove(itemId);
+    }
+
+    @Override
+    public Collection<PurchaseDTO> list() {
+        return this.itemsDb.values();
     }
 
 }

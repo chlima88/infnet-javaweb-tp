@@ -4,27 +4,29 @@ import br.edu.infnet.tpapp.util.Constants;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.EnumSet;
+import java.util.Objects;
 
-public class Customer extends BaseEntity<Customer> {
+public class Customer {
 	
 	private int id;
 	private String name;
 	private String document;
 	private String email;
 	private LocalDate birthday;
-	private LocalDate createdAt = LocalDate.now();
+	private LocalDate createdAt;
 	private boolean active = true;
 
-	public Customer() {};
+	public Customer() {
+		this.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	};
 	
 	public Customer(int id, String name, String document, String email, String birthday) {
+		this();
 		this.id = id;
 		this.name = name;
 		this.document = document;
 		this.email = email;
 		this.setBirthday(birthday);
-		this.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 	}
 
 	public void activate() {
@@ -52,7 +54,7 @@ public class Customer extends BaseEntity<Customer> {
 		);
 	}
 
-	@Override
+
 	public int getId() {
 		return id;
 	}
@@ -116,11 +118,41 @@ public class Customer extends BaseEntity<Customer> {
          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
          this.createdAt = LocalDate.parse(date,formatter);
 	}
-	@Override
-	public int compareTo(Customer customer) {
-		if(customer.getId() == this.getId()) return 0;
-		if(customer.getDocument().equals(this.getDocument())) return 0;
-		if(customer.getEmail().equals(this.getEmail())) return 0;
-		return 1;
+
+	public boolean compareTo(Customer other) throws Exception {
+		if(this.getId() == other.getId())
+			throw new Exception("CustomerId already in use");
+		if(this.getDocument().equals(other.getDocument()))
+			throw new Exception("Document already in use");
+		if(this.getEmail().equals(other.getEmail()))
+			throw new Exception("Email already in use");
+		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "Customer{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", document='" + document + '\'' +
+				", email='" + email + '\'' +
+				", birthday=" + birthday +
+				", createdAt=" + createdAt +
+				", active=" + active +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) return true;
+		if (!(other instanceof Customer customer)) return false;
+        return this.getId() == customer.getId()
+				&& this.isActive() == customer.isActive()
+				&& Objects.equals(this.getName(), customer.getName())
+				&& Objects.equals(this.getDocument(), customer.getDocument())
+				&& Objects.equals(this.getEmail(), customer.getEmail())
+				&& Objects.equals(this.getBirthday(), customer.getBirthday())
+				&& Objects.equals(this.getCreatedAt(), customer.getCreatedAt());
+	}
+
 }
