@@ -82,4 +82,44 @@ public class CustomerServiceTests {
         sut.deactivate(customer.getId());
 
     }
+
+    @Test
+    @DisplayName("Should throw error when adding customerId used previously")
+    void shouldThrowErrorWhenAddingCustomerIdInUse() throws Exception {
+        sut.add(customer);
+        Exception exception = assertThrows(
+                Exception.class,
+                () -> sut.add(customer));
+    }
+
+    @Test
+    @DisplayName("Should throw error when adding Customer with repeated data")
+    void shouldThrowErrorWhenAddingCustomerWithRepeatedData() throws Exception {
+        sut.add(customer);
+        customer.setId(2);
+        assertThrows(
+                Exception.class,
+                () -> sut.add(customer));
+    }
+
+    @Test
+    @DisplayName("Should throw error when get an unknown CustomerId")
+    void shouldThrowErrorWhenGetInvalidCustomerId() {
+        Exception exception = assertThrows(
+                Exception.class,
+                () -> sut.get(1000)
+        );
+        assertEquals("CustomerId not found", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should throw error when removing an unknown CustomerId")
+    void shoudThrowErrorWhenRemoveInvalidCustomerId() {
+        Exception exception = assertThrows(
+                Exception.class,
+                () -> sut.get(1000)
+        );
+        assertEquals("CustomerId not found", exception.getMessage());
+
+    }
 }

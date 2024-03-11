@@ -5,58 +5,83 @@ import br.edu.infnet.tpapp.repository.GenericRepository;
 import br.edu.infnet.tpapp.repository.IRepository;
 import br.edu.infnet.tpapp.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Description;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class ProductServiceTest {
 
     private Product product;
-    private ProductService productService;
+    private ProductService sut;
 
 
     @BeforeEach
     void setUp() {
         product = new Product(1, "Microsoft 1850 Wireless Mouse", "Technology", "Your next Wireless Mouse", 79);
         IRepository<Product> productRepository = new GenericRepository<>();
-        productService = new ProductService(productRepository);
+        sut = new ProductService(productRepository);
     }
 
 
     @Test
+    @DisplayName("Should create a product")
     void shouldCreateAProduct() throws Exception {
-        productService.add(product);
+        sut.add(product);
 
-        assertTrue(productService.list().contains(product));
+        assertTrue(sut.list().contains(product));
     }
 
     @Test
+    @DisplayName("Should remove a product")
     void shouldRemoveAProduct() throws Exception {
-        productService.add(product);
-        productService.remove(product.getId());
+        sut.add(product);
+        sut.remove(product.getId());
 
-        assertTrue(productService.list().isEmpty());
+        assertTrue(sut.list().isEmpty());
     }
 
     @Test
+    @DisplayName("Should retrieve a product")
     void shouldRetrieveAProduct() throws Exception {
-        productService.add(product);
+        sut.add(product);
 
-        assertEquals(product, productService.get(product.getId()));
+        assertEquals(product, sut.get(product.getId()));
     }
 
     @Test
+    @DisplayName("Should retrieve a product list")
     void shouldRetrieveAProductList() throws Exception {
-        productService.add(product);
+        sut.add(product);
         Product product2 = new Product(2, "Washer Dryer Samsung WD13T", "White goods", "Enjoy more effective washing with AI Ecobubble™", 4769.10f);
-        productService.add(product2);
+        sut.add(product2);
 
-        assertEquals(2,productService.list().size());
-        assertEquals(product, productService.get(product.getId()));
-        assertEquals(product2, productService.get(product2.getId()));
+        assertEquals(2,sut.list().size());
+        assertEquals(product, sut.get(product.getId()));
+        assertEquals(product2, sut.get(product2.getId()));
+    }
+
+    @Test
+    @DisplayName("Should throw error when adding productId used previously")
+    void shouldThrowErrorWhenAddingProductIdInUse() throws Exception {
+        sut.add(product);
+        Exception exception = assertThrows(
+                Exception.class,
+                () -> sut.add(product));
+    }
+
+    @Test
+    @DisplayName("Should throw error when adding Product with repeated data")
+    void shouldThrowErrorWhenAddingProductWithRepeatedData() throws Exception {
+        sut.add(product);
+        product.setId(2);
+        assertThrows(
+                Exception.class,
+                () -> sut.add(product));
     }
 }
