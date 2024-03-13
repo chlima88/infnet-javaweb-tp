@@ -3,13 +3,10 @@ package br.edu.infnet.tpapp.controller;
 import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.dtos.PurchaseDTO;
 import br.edu.infnet.tpapp.services.PurchaseService;
-import feign.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 

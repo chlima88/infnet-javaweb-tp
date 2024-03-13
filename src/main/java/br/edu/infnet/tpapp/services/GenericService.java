@@ -1,11 +1,7 @@
 package br.edu.infnet.tpapp.services;
 
 import br.edu.infnet.tpapp.domain.model.BaseEntity;
-import br.edu.infnet.tpapp.dtos.PurchaseDTO;
 import br.edu.infnet.tpapp.repository.IRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
@@ -14,7 +10,7 @@ public class GenericService<T extends BaseEntity<T>> implements IService<T> {
 
     protected final IRepository<T> repository;
 
-    public GenericService(IRepository<T> repository){
+    public GenericService(IRepository<T> repository) {
         this.repository = repository;
     }
 

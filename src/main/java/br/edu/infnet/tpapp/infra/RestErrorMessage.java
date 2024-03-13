@@ -16,10 +16,6 @@ public class RestErrorMessage {
         this.time = LocalDateTime.now();
     }
 
-    public RestErrorMessage( int code) {
-        this();
-        this.code = code;
-    }
 
     public RestErrorMessage(HttpStatus status, String message) {
         this();

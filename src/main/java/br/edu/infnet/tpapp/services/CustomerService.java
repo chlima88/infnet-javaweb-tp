@@ -3,7 +3,6 @@ package br.edu.infnet.tpapp.services;
 import br.edu.infnet.tpapp.domain.model.Customer;
 import br.edu.infnet.tpapp.exceptions.CustomerNotFoundException;
 import br.edu.infnet.tpapp.exceptions.CustomerServiceException;
-import br.edu.infnet.tpapp.exceptions.InvalidProductException;
 import br.edu.infnet.tpapp.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

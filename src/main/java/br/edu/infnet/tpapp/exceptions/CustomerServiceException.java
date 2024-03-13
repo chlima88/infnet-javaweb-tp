@@ -1,6 +1,5 @@
 package br.edu.infnet.tpapp.exceptions;
 
-import org.springframework.http.HttpStatus;
 
 public class CustomerServiceException extends Exception {
 

@@ -1,6 +1,5 @@
 package br.edu.infnet.tpapp.infra;
 
-import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

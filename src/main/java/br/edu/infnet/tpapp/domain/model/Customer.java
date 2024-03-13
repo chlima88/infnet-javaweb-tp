@@ -19,7 +19,7 @@ public class Customer {
 
 	public Customer() {
 		this.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-	};
+	}
 	
 	public Customer(int id, String name, String document, String email, String birthday) {
 		this();
