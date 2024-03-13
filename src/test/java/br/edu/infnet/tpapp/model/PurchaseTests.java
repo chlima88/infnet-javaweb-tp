@@ -48,7 +48,9 @@ class PurchaseTests {
 		purchase.setCustomer(customer);
 		product.deactivate();
 
-		assertThrows(InvalidProductException.class, () -> purchase.setProducts(List.of(product)));
+		assertThrows(
+				InvalidProductException.class,
+				() -> purchase.setProducts(List.of(product)));
 	}
 
 	@Test
@@ -58,7 +60,9 @@ class PurchaseTests {
 		purchase.setProducts(List.of(product));
 		customer.deactivate();
 
-		assertThrows(InvalidCustomerException.class, () -> purchase.setCustomer(customer));
+		assertThrows(
+				InvalidCustomerException.class,
+				() -> purchase.setCustomer(customer));
 	}
 
 	@Test

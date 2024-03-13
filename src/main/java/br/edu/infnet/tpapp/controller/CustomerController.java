@@ -4,7 +4,7 @@ import br.edu.infnet.tpapp.domain.model.Customer;
 import br.edu.infnet.tpapp.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,76 +21,36 @@ public class CustomerController implements IController<Customer> {
     }
 
     @Override
-    public void add(@RequestBody Customer data) {
-        try {
+    public ResponseEntity<Void> add(@RequestBody Customer data) throws Exception {
             this.customerService.add(data);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+            return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
-    public Collection<Customer> list() {
-        try {
-            return this.customerService.list();
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Collection<Customer>> list() {
+            return ResponseEntity.ok(this.customerService.list());
     }
 
     @Override
-    public Customer get(@PathVariable int id) {
-        try {
-            return this.customerService.get(id);
-        } catch (Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Customer> get(@PathVariable int id) throws Exception {
+            return ResponseEntity.ok(this.customerService.get(id));
     }
 
     @Override
-    public void delete(@PathVariable int id) {
-        try {
+    public ResponseEntity<Void> delete(@PathVariable int id) throws Exception {
             this.customerService.remove(id);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+            return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/{id}/deactivate")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void disable(@PathVariable int id) {
-        try {
+    public ResponseEntity<Void> disable(@PathVariable int id) throws Exception {
             this.customerService.deactivate(id);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+            return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/{id}/activate")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void enable(@PathVariable int id) {
-        try {
+    public ResponseEntity<Void> enable(@PathVariable int id) throws Exception {
             this.customerService.activate(id);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+            return ResponseEntity.noContent().build();
     }
 }

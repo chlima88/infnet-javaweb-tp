@@ -49,15 +49,15 @@ public class PurchaseControllerTest {
         Customer c3 = new Customer(3, "Ricardo Frohlich", "3333", "rf@ecomp.com", "1980-01-01");
         c3.setCreatedAt("2023-01-01");
 
-        customerRepository.add(c1);
-        customerRepository.add(c2);
-        customerRepository.add(c3);
+        customerRepository.save(c1);
+        customerRepository.save(c2);
+        customerRepository.save(c3);
 
         p1 = new Product(1, "Wireless Mouse", "Microsoft", "1850", 79);
         Product p2 = new Product(2, "Monitor", "Dell", "120mhz 4k 29\" Ultra-wide OLED", 1799);
 
-        productRepository.add(p1);
-        productRepository.add(p2);
+        productRepository.save(p1);
+        productRepository.save(p2);
 
         purchase = new Purchase(1, c1, List.of(p1, p2));
         purchase2 = new Purchase(2, c2, List.of(p1, p2));
@@ -68,33 +68,33 @@ public class PurchaseControllerTest {
 
     @Test
     @DisplayName("Should create an purchase")
-    void shouldCreatePurchase() {
+    void shouldCreatePurchase() throws Exception {
         sut.add(purchaseDTO);
 
-        assertEquals(purchase, sut.get(purchaseDTO.getId()));
+        assertEquals(purchase, sut.get(purchaseDTO.getId()).getBody());
     }
 
     @Test
     @DisplayName("Should delete an purchase")
-    void shouldDeletePurchase() {
+    void shouldDeletePurchase() throws Exception {
         sut.add(purchaseDTO);
         sut.delete(purchaseDTO.getId());
 
-        assertFalse(sut.list().contains(purchase));
+        assertFalse(sut.list().getBody().contains(purchase));
     }
 
     @Test
     @DisplayName("Should retrieve an purchase")
-    void shouldGetPurchases() {
+    void shouldGetPurchases() throws Exception {
         sut.add(purchaseDTO);
-        assertEquals(purchase, sut.get(purchaseDTO.getId()));
+        assertEquals(purchase, sut.get(purchaseDTO.getId()).getBody());
     }
 
     @Test
     @DisplayName("Should list purchase")
-    void shouldListPurchases() {
+    void shouldListPurchases() throws Exception {
         sut.add(purchaseDTO);
-        assertTrue(sut.list().contains(purchase));
+        assertTrue(sut.list().getBody().contains(purchase));
     }
 
 }

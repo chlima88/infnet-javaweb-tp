@@ -27,31 +27,31 @@ public class ServiceControllerTest {
 
     @Test
     @DisplayName("Should create an product")
-    void shouldCreateProduct() {
+    void shouldCreateProduct() throws Exception {
         sut.add(product);
-        assertEquals(product,sut.get(product.getId()));
+        assertEquals(product,sut.get(product.getId()).getBody());
     }
 
     @Test
     @DisplayName("Should delete an product")
-    void shouldDeleteProduct() {
+    void shouldDeleteProduct() throws Exception {
         sut.add(product);
         sut.delete(product.getId());
-        assertFalse(sut.list().contains(product));
+        assertFalse(sut.list().getBody().contains(product));
     }
 
     @Test
     @DisplayName("Should retrieve an product")
-    void shouldGetProducts() {
+    void shouldGetProducts() throws Exception {
         sut.add(product);
-        assertEquals(product, sut.get(product.getId()));
+        assertEquals(product, sut.get(product.getId()).getBody());
     }
 
     @Test
     @DisplayName("Should list product")
-    void shouldListProducts() {
+    void shouldListProducts() throws Exception {
         sut.add(product);
-        assertTrue(sut.list().contains(product));
+        assertTrue(sut.list().getBody().contains(product));
     }
 
 }

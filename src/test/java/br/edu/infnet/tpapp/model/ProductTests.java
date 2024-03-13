@@ -2,6 +2,7 @@ package br.edu.infnet.tpapp.model;
 
 import br.edu.infnet.tpapp.domain.model.Customer;
 import br.edu.infnet.tpapp.domain.model.Product;
+import br.edu.infnet.tpapp.exceptions.InvalidProductException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -65,7 +66,8 @@ class ProductTests {
 		product.setId(1);
 		product.setTitle("Dummy Title");
 
-		Exception exception = assertThrows(Exception.class,
+		Exception exception = assertThrows(
+				InvalidProductException.class,
 				()-> sut.compareTo(product));
 
 		assertEquals("ProductId already in use",
@@ -79,7 +81,8 @@ class ProductTests {
 		product.setId(2);
 		product.setTitle("Dummy Title");
 
-		Exception exception = assertThrows(Exception.class,
+		Exception exception = assertThrows(
+				InvalidProductException.class,
 				()-> sut.compareTo(product));
 
 		assertEquals("Product Title already in use",

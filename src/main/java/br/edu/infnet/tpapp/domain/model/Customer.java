@@ -1,5 +1,6 @@
 package br.edu.infnet.tpapp.domain.model;
 
+import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.util.Constants;
 
 import java.time.LocalDate;
@@ -119,13 +120,13 @@ public class Customer {
          this.createdAt = LocalDate.parse(date,formatter);
 	}
 
-	public boolean compareTo(Customer other) throws Exception {
+	public boolean compareTo(Customer other) throws InvalidCustomerException {
 		if(this.getId() == other.getId())
-			throw new Exception("CustomerId already in use");
+			throw new InvalidCustomerException("CustomerId already in use");
 		if(this.getDocument().equals(other.getDocument()))
-			throw new Exception("Document already in use");
+			throw new InvalidCustomerException("Document already in use");
 		if(this.getEmail().equals(other.getEmail()))
-			throw new Exception("Email already in use");
+			throw new InvalidCustomerException("Email already in use");
 		return false;
 	}
 

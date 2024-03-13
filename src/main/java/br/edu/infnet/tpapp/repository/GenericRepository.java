@@ -16,11 +16,11 @@ public class GenericRepository<T extends BaseEntity<T>> implements IRepository<T
         this.itemsDb = new HashMap<>();
     }
 
-    public void add(T item) {
+    public void save(T item) {
         this.itemsDb.put(item.getId(), item);
     }
 
-    public Optional<T> get(int itemId)  {
+    public Optional<T> getById(int itemId)  {
         return Optional.ofNullable(this.itemsDb.get(itemId));
     }
 
@@ -28,7 +28,7 @@ public class GenericRepository<T extends BaseEntity<T>> implements IRepository<T
         this.itemsDb.remove(itemId);
     }
 
-    public Collection<T> list() {
+    public Collection<T> getAll() {
         return this.itemsDb.values();
     }
 

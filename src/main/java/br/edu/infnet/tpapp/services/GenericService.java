@@ -20,24 +20,24 @@ public class GenericService<T extends BaseEntity<T>> implements IService<T> {
 
     @Override
     public void add(T item) throws Exception {
-        if (this.repository.get(item.getId()).isPresent())
+        if (this.repository.getById(item.getId()).isPresent())
             throw new Exception("ProductId not found");
-        this.repository.add(item);
+        this.repository.save(item);
     }
 
     public T get(int itemId) throws Exception {
-        return this.repository.get(itemId)
+        return this.repository.getById(itemId)
                 .orElseThrow(() -> new Exception("Item Id not found"));
     }
 
     public void remove(int itemId) throws Exception {
-        this.repository.get(itemId)
+        this.repository.getById(itemId)
                 .orElseThrow(() -> new Exception("Item Id not found"));
         this.repository.remove(itemId);
     }
 
     public Collection<T> list() {
-        return this.repository.list();
+        return this.repository.getAll();
     }
 
 }

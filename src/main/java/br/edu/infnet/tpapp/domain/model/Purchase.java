@@ -40,7 +40,7 @@ public class Purchase  {
     }
 
     public void setCustomer(Customer customer) throws InvalidCustomerException {
-        if (!customer.isActive()) throw new InvalidCustomerException();
+        if (!customer.isActive()) throw new InvalidCustomerException("Customer "+customer.getId()+" is inactive.");
         this.customer = customer;
     }
 
@@ -50,7 +50,7 @@ public class Purchase  {
 
     public void setProducts(List<Product> products) throws InvalidProductException {
         for (Product product : products ) {
-            if (!product.isActive()) throw new InvalidProductException();
+            if (!product.isActive()) throw new InvalidProductException("Product "+product.getId()+" is disabled." );
         }
         this.products = products;
     }

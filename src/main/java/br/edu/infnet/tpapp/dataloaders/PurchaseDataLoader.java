@@ -27,6 +27,6 @@ public class PurchaseDataLoader implements ApplicationRunner {
 
 
         PurchaseDTO purchase = new PurchaseDTO(1, 1, List.of(1,2) );
-        purchaseRepository.add(purchase);
+        purchaseRepository.save(purchase);
     }
 }

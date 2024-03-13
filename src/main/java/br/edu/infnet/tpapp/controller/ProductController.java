@@ -4,6 +4,7 @@ import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,50 +23,24 @@ public class ProductController implements IController<Product> {
     }
 
     @Override
-    public Product get(int id) {
-        try {
-            return this.productService.get(id);
-        } catch (Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Product> get(int id) throws Exception {
+        return ResponseEntity.ok(this.productService.get(id));
     }
 
     @Override
-    public void delete(int id) {
-        try {
-            this.productService.remove(id);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Void> delete(int id) throws Exception {
+        this.productService.remove(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public Collection<Product> list() {
-        try {
-            return this.productService.list();
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Collection<Product>> list() {
+        return ResponseEntity.ok(productService.list());
     }
 
     @Override
-    public void add(Product item) {
-        try {
-            this.productService.add(item);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Void> add(Product item) throws Exception {
+        this.productService.add(item);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

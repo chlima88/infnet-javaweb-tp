@@ -28,9 +28,9 @@ public class CustomerDataLoader implements ApplicationRunner {
         Customer c3 = new Customer(3,"Ricardo Frohlich","3333","rf@ecomp.com","1980-01-01");
         c3.setCreatedAt("2023-01-01");
 
-        customerRepository.add(c1);
-        customerRepository.add(c2);
-        customerRepository.add(c3);
+        customerRepository.save(c1);
+        customerRepository.save(c2);
+        customerRepository.save(c3);
 
     }
 }

@@ -4,6 +4,10 @@ import br.edu.infnet.tpapp.domain.model.Customer;
 import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.dtos.PurchaseDTO;
+import br.edu.infnet.tpapp.exceptions.CustomerNotFoundException;
+import br.edu.infnet.tpapp.exceptions.InvalidPurchaseException;
+import br.edu.infnet.tpapp.exceptions.ProductNotFoundException;
+import br.edu.infnet.tpapp.exceptions.PurchaseServiceException;
 import br.edu.infnet.tpapp.repository.CustomerRepository;
 import br.edu.infnet.tpapp.repository.GenericRepository;
 import br.edu.infnet.tpapp.repository.IRepository;
@@ -50,15 +54,15 @@ public class PurchaseServiceTest {
         Customer c3 = new Customer(3, "Ricardo Frohlich", "3333", "rf@ecomp.com", "1980-01-01");
         c3.setCreatedAt("2023-01-01");
 
-        customerRepository.add(c1);
-        customerRepository.add(c2);
-        customerRepository.add(c3);
+        customerRepository.save(c1);
+        customerRepository.save(c2);
+        customerRepository.save(c3);
 
         p1 = new Product(1, "Wireless Mouse", "Microsoft", "1850", 79);
         Product p2 = new Product(2, "Monitor", "Dell", "120mhz 4k 29\" Ultra-wide OLED", 1799);
 
-        productRepository.add(p1);
-        productRepository.add(p2);
+        productRepository.save(p1);
+        productRepository.save(p2);
 
         purchase = new Purchase(1, c1, List.of(p1, p2));
         purchase2 = new Purchase(2, c2, List.of(p1, p2));
@@ -111,10 +115,10 @@ public class PurchaseServiceTest {
     @DisplayName("Should throw error retrieving a purchase with unknown customerId")
     void shouldThrowErrorRetrievingAPurchaseWithUnknownCustomerId() {
         Exception exception = assertThrows(
-                Exception.class,
+                CustomerNotFoundException.class,
                 () -> sut.add(new PurchaseDTO(4,100, List.of(1,2)))
         );
-        assertEquals("Add Purchase: CustomerId not found", exception.getMessage());
+        assertEquals("CustomerId not found", exception.getMessage());
     }
 
     @Test
@@ -122,7 +126,9 @@ public class PurchaseServiceTest {
     void shouldThrowErrorWhenPurchaseIdAlreadyUsed() throws Exception {
         sut.add(purchaseDTO);
 
-        Exception exception = assertThrows(Exception.class, () -> sut.add(new PurchaseDTO(1,1,List.of(1,2))));
+        Exception exception = assertThrows(
+                PurchaseServiceException.class,
+                () -> sut.add(new PurchaseDTO(1,1,List.of(1,2))));
         assertEquals("PurchaseId already in use", exception.getMessage());
     }
 
@@ -130,10 +136,10 @@ public class PurchaseServiceTest {
     @DisplayName("Should throw error when customerId is not found")
     void shouldThrowErrorWhenCustomerIdNotFound() throws Exception {
         Exception exception = assertThrows(
-                Exception.class,
+                CustomerNotFoundException.class,
                 () -> sut.add(new PurchaseDTO(10,10,List.of(1,2)))
         );
-        assertEquals("Add Purchase: CustomerId not found", exception.getMessage());
+        assertEquals("CustomerId not found", exception.getMessage());
     }
 
     @Test
@@ -141,20 +147,20 @@ public class PurchaseServiceTest {
     void shouldThrowErrorWhenCustomerIsDisabled() throws Exception {
         c1.deactivate();
         Exception exception = assertThrows(
-                Exception.class,
+                InvalidPurchaseException.class,
                 () -> sut.add(new PurchaseDTO(10,1,List.of(1,2)))
         );
-        assertEquals("Add Purchase: Disabled Customer", exception.getMessage());
+        assertEquals("Disabled Customer", exception.getMessage());
     }
 
     @Test
     @DisplayName("Should throw error when productId is not found")
     void shouldThrowErrorWhenProductIdNotFound() throws Exception {
         Exception exception = assertThrows(
-                Exception.class,
+                ProductNotFoundException.class,
                 () -> sut.add(new PurchaseDTO(10,1,List.of(31,32)))
         );
-        assertEquals("Add Purchase: ProductId not found", exception.getMessage());
+        assertEquals("ProductId not found", exception.getMessage());
     }
 
     @Test
@@ -162,10 +168,10 @@ public class PurchaseServiceTest {
     void shouldThrowErrorWhenProductIsDisabled() throws Exception {
         p1.deactivate();
         Exception exception = assertThrows(
-                Exception.class,
+                InvalidPurchaseException.class,
                 () -> sut.add(new PurchaseDTO(10,1,List.of(1,2)))
         );
-        assertEquals("Add Purchase: Disabled Product", exception.getMessage());
+        assertEquals("Disabled Product", exception.getMessage());
 
     }
 }

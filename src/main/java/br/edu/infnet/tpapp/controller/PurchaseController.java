@@ -3,9 +3,11 @@ package br.edu.infnet.tpapp.controller;
 import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.dtos.PurchaseDTO;
 import br.edu.infnet.tpapp.services.PurchaseService;
+import feign.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -13,7 +15,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(value="/purchases")
-public class PurchaseController {
+public class PurchaseController  {
 
     PurchaseService purchaseService;
 
@@ -24,56 +26,26 @@ public class PurchaseController {
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody PurchaseDTO data) {
-        try {
+    public ResponseEntity<Void> add(@RequestBody PurchaseDTO data) throws Exception {
             this.purchaseService.add(data);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+            return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Collection<Purchase> list() {
-        try {
-            return this.purchaseService.list();
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Collection<Purchase>> list() throws Exception {
+            return ResponseEntity.ok().body(this.purchaseService.list());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Purchase get(@PathVariable int id) {
-        try {
-            return this.purchaseService.get(id);
-        } catch (Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    error.getMessage(),
-                    error);
-        }
+    public ResponseEntity<Purchase> get(@PathVariable int id) throws Exception {
+            return ResponseEntity.ok().body(this.purchaseService.get(id));
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable int id) {
-        try {
+    public ResponseEntity<Void> delete(@PathVariable int id) throws Exception {
             this.purchaseService.remove(id);
-        } catch(Exception error) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    error.getMessage(),
-                    error);
-        }
+            return ResponseEntity.noContent().build();
     }
 }

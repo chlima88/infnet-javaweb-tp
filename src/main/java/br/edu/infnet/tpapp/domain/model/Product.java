@@ -1,5 +1,7 @@
 package br.edu.infnet.tpapp.domain.model;
 
+import br.edu.infnet.tpapp.exceptions.InvalidProductException;
+
 import java.util.Objects;
 
 public class Product extends  BaseEntity<Product> {
@@ -81,11 +83,11 @@ public class Product extends  BaseEntity<Product> {
 	}
 
 	@Override
-	public boolean compareTo(Product other) throws Exception {
+	public boolean compareTo(Product other) throws InvalidProductException {
 		if(other.getId() == this.getId())
-			throw new Exception("ProductId already in use");
+			throw new InvalidProductException("ProductId already in use");
 		if(other.getTitle().equalsIgnoreCase(this.getTitle()))
-			throw new Exception("Product Title already in use");
+			throw new InvalidProductException("Product Title already in use");
 		return false;
 	}
 

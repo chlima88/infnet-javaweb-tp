@@ -18,12 +18,12 @@ public class PurchaseRepository implements IRepository<PurchaseDTO> {
     }
 
     @Override
-    public void add(PurchaseDTO item) {
+    public void save(PurchaseDTO item) {
         this.itemsDb.put(item.getId(), item);
     }
 
     @Override
-    public Optional<PurchaseDTO> get(int itemId) {
+    public Optional<PurchaseDTO> getById(int itemId) {
             return Optional.ofNullable(this.itemsDb.get(itemId));
     }
 
@@ -33,7 +33,7 @@ public class PurchaseRepository implements IRepository<PurchaseDTO> {
     }
 
     @Override
-    public Collection<PurchaseDTO> list() {
+    public Collection<PurchaseDTO> getAll() {
         return this.itemsDb.values();
     }
 

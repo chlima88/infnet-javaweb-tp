@@ -27,36 +27,36 @@ public class CustomerControllerTest {
 
     @Test
     @DisplayName("Should create an customer")
-    void shouldCreateCustomer() {
+    void shouldCreateCustomer() throws Exception {
         sut.add(customer);
-        assertEquals(customer,sut.get(customer.getId()));
+        assertEquals(customer,sut.get(customer.getId()).getBody());
     }
 
     @Test
     @DisplayName("Should delete an customer")
-    void shouldDeleteCustomer() {
+    void shouldDeleteCustomer() throws Exception {
         sut.add(customer);
         sut.delete(customer.getId());
-        assertFalse(sut.list().contains(customer));
+        assertFalse(sut.list().getBody().contains(customer));
     }
 
     @Test
     @DisplayName("Should retrieve an customer")
-    void shouldGetCustomers() {
+    void shouldGetCustomers() throws Exception {
         sut.add(customer);
-        assertEquals(customer, sut.get(customer.getId()));
+        assertEquals(customer, sut.get(customer.getId()).getBody());
     }
 
     @Test
     @DisplayName("Should list customer")
-    void shouldListCustomers() {
+    void shouldListCustomers() throws Exception {
         sut.add(customer);
-        assertTrue(sut.list().contains(customer));
+        assertTrue(sut.list().getBody().contains(customer));
     }
 
     @Test
     @DisplayName("Should deactivate the customer")
-    void shouldDeactivateCustomers() {
+    void shouldDeactivateCustomers() throws Exception {
         sut.add(customer);
         sut.enable(customer.getId());
         sut.disable(customer.getId());
@@ -65,7 +65,7 @@ public class CustomerControllerTest {
 
     @Test
     @DisplayName("Should activate the customer")
-    void shouldActivateCustomers() {
+    void shouldActivateCustomers() throws Exception {
         sut.add(customer);
         sut.disable(customer.getId());
         sut.enable(customer.getId());

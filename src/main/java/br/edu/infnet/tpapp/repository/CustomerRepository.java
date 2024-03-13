@@ -18,12 +18,12 @@ public class CustomerRepository implements IRepository<Customer> {
     }
 
     @Override
-    public void add(Customer item)  {
+    public void save(Customer item)  {
         this.itemsDb.put(item.getId(), item);
     }
 
     @Override
-    public Optional<Customer> get(int itemId)  {
+    public Optional<Customer> getById(int itemId)  {
         return Optional.ofNullable(this.itemsDb.get(itemId));
     }
 
@@ -33,7 +33,7 @@ public class CustomerRepository implements IRepository<Customer> {
     }
 
     @Override
-    public Collection<Customer> list() {
+    public Collection<Customer> getAll() {
         return this.itemsDb.values();
     }
 

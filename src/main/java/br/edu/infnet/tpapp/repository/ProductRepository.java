@@ -18,13 +18,13 @@ import java.util.Optional;
 public interface ProductRepository extends IRepository<Product> {
 
     @GetMapping(value = "/{id}")
-    Optional<Product> get(@PathVariable int id);
+    Optional<Product> getById(@PathVariable int id);
 
     @GetMapping
-    Collection<Product> list();
+    Collection<Product> getAll();
 
     @PostMapping
-    void add(Product product);
+    void save(Product product);
 
     @DeleteMapping(value = "/{id}")
     void remove(@PathVariable int id);

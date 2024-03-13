@@ -3,6 +3,7 @@ package br.edu.infnet.tpapp.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -112,7 +113,8 @@ class CustomerTests {
 		customer.setDocument("123");
 		customer.setEmail("abc@test.com");
 
-		Exception exception = assertThrows(Exception.class,
+		Exception exception = assertThrows(
+				InvalidCustomerException.class,
 				()-> sut.compareTo(customer));
 
 		assertEquals("CustomerId already in use", exception.getMessage());
@@ -126,7 +128,8 @@ class CustomerTests {
 		customer.setDocument("123");
 		customer.setEmail("abc@test.com");
 
-		Exception exception = assertThrows(Exception.class,
+		Exception exception = assertThrows(
+				InvalidCustomerException.class,
 				()-> sut.compareTo(customer));
 
 		assertEquals("Document already in use", exception.getMessage());
@@ -140,7 +143,8 @@ class CustomerTests {
 		customer.setDocument("123");
 		customer.setEmail("abc@test.com");
 
-		Exception exception = assertThrows(Exception.class,
+		Exception exception = assertThrows(
+				InvalidCustomerException.class,
 				()-> sut.compareTo(customer));
 
 		assertEquals("Email already in use", exception.getMessage());

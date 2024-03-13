@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface IRepository<T> {
 
-    Optional<T> get(int id) ;
+    Optional<T> getById(int id) ;
 
-    Collection<T> list();
+    Collection<T> getAll();
 
-    void add(T item);
+    void save(T item);
     void remove(int id) ;
 }
