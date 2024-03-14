@@ -2,20 +2,35 @@ package br.edu.infnet.tpapp.domain.model;
 
 import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.util.Constants;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "Customer")
 public class Customer {
-	
+
+	@Id
+	@Column(name = "customerId")
 	private int id;
+	@Column
 	private String name;
+	@Column
 	private String document;
+	@Column
 	private String email;
+	@Column
 	private LocalDate birthday;
+	@Temporal(TemporalType.DATE)
 	private LocalDate createdAt;
+	@Column
 	private boolean active = true;
+
+	@OneToMany(mappedBy = "customer")
+	private List<Purchase> purchases;
 
 	public Customer() {
 		this.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));

@@ -1,17 +1,29 @@
 package br.edu.infnet.tpapp.domain.model;
 
 import br.edu.infnet.tpapp.exceptions.InvalidProductException;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "Product")
 public class Product extends  BaseEntity<Product> {
 
+	@Id
 	private int id;
+	@Column
 	private String title;
+	@Column
 	private String category;
+	@Column
 	private String description;
+	@Column
 	private float price;
+	@Column
 	private boolean active;
+	@ManyToMany(mappedBy = "products")
+	private List<Purchase> purchases;
 
 	public Product(){
 		this.active = true;

@@ -2,14 +2,26 @@ package br.edu.infnet.tpapp.domain.model;
 
 import br.edu.infnet.tpapp.exceptions.InvalidCustomerException;
 import br.edu.infnet.tpapp.exceptions.InvalidProductException;
+import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "Purchase")
 public class Purchase  {
 
+    @Id
     private int id;
+    @ManyToOne
+    @JoinColumn(name = "purchase_id")
     private Customer customer;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "purchase_product",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "purchase_id", referencedColumnName = "id")
+    )
     private List<Product> products;
 
     public Purchase() {}

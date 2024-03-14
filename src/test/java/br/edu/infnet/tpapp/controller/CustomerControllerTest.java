@@ -2,10 +2,13 @@ package br.edu.infnet.tpapp.controller;
 
 import br.edu.infnet.tpapp.domain.model.Customer;
 import br.edu.infnet.tpapp.repository.CustomerRepository;
+import br.edu.infnet.tpapp.repository.GenericJPARepository;
 import br.edu.infnet.tpapp.services.CustomerService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,15 +17,21 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerControllerTest {
 
     CustomerController sut;
+    @Autowired
+    GenericJPARepository customerRepository;
+    @Autowired
+    CustomerService customerService;
     Customer customer;
 
     @BeforeEach
     void setUp() {
-        CustomerRepository customerRepository = new CustomerRepository();
-        CustomerService productRepository = new CustomerService(customerRepository);
-        sut = new CustomerController(productRepository);
+        sut = new CustomerController(customerService);
         customer = new Customer(1, "Elberth", "0987654321", "em@ecomp.com", "1990-01-01");
         customer.setCreatedAt("2012-12-20");
+    }
+    @AfterEach
+    void tearDown() {
+        customerRepository.deleteAll();
     }
 
     @Test
@@ -60,7 +69,7 @@ public class CustomerControllerTest {
         sut.add(customer);
         sut.enable(customer.getId());
         sut.disable(customer.getId());
-        assertFalse(customer.isActive());
+        assertFalse(sut.get(customer.getId()).getBody().isActive());
     }
 
     @Test
@@ -69,7 +78,7 @@ public class CustomerControllerTest {
         sut.add(customer);
         sut.disable(customer.getId());
         sut.enable(customer.getId());
-        assertTrue(customer.isActive());
+        assertTrue(sut.get(customer.getId()).getBody().isActive());
     }
 
 }
