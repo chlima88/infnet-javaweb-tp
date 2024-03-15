@@ -2,14 +2,10 @@ package br.edu.infnet.tpapp.services;
 
 import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.repository.GenericRepository;
-import br.edu.infnet.tpapp.repository.IRepository;
-import br.edu.infnet.tpapp.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Description;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,14 +16,11 @@ public class ProductServiceTest {
     private Product product;
     private ProductService sut;
 
-
     @BeforeEach
     void setUp() {
         product = new Product(1, "Microsoft 1850 Wireless Mouse", "Technology", "Your next Wireless Mouse", 79);
-        IRepository<Product> productRepository = new GenericRepository<>();
-        sut = new ProductService(productRepository);
+        sut = new ProductService(new GenericRepository<>());
     }
-
 
     @Test
     @DisplayName("Should create a product")

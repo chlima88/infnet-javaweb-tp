@@ -16,19 +16,31 @@ public class GenericRepository<T extends BaseEntity<T>> implements IRepository<T
         this.itemsDb = new HashMap<>();
     }
 
-    public void save(T item) {
+    public T save(T item) {
         this.itemsDb.put(item.getId(), item);
+        return null;
     }
 
-    public Optional<T> getById(int itemId)  {
+    public Optional<T> findById(int itemId)  {
         return Optional.ofNullable(this.itemsDb.get(itemId));
     }
 
-    public void remove(int itemId) {
+    @Override
+    public void deleteById(int itemId) {
         this.itemsDb.remove(itemId);
     }
 
-    public Collection<T> getAll() {
+    @Override
+    public boolean existsById(int id) {
+        return this.itemsDb.containsKey(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        this.itemsDb.clear();
+    }
+
+    public Collection<T> findAll() {
         return this.itemsDb.values();
     }
 

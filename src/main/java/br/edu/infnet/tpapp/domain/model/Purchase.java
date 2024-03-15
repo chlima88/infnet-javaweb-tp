@@ -9,18 +9,19 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Purchase")
-public class Purchase  {
+public class Purchase extends BaseEntity<Purchase> {
 
     @Id
+    @Column(name = "purchaseId")
     private int id;
     @ManyToOne
-    @JoinColumn(name = "purchase_id")
+    @JoinColumn(name = "customerId")
     private Customer customer;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "purchase_product",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "purchase_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "productId", referencedColumnName = "purchaseId"),
+            inverseJoinColumns = @JoinColumn(name = "purchaseId", referencedColumnName = "productId")
     )
     private List<Product> products;
 
@@ -65,6 +66,11 @@ public class Purchase  {
             if (!product.isActive()) throw new InvalidProductException("Product "+product.getId()+" is disabled." );
         }
         this.products = products;
+    }
+
+    @Override
+    public boolean compareTo(Purchase other) throws Exception {
+        return this.getId() == other.getId();
     }
 
     @Override

@@ -4,7 +4,6 @@ import br.edu.infnet.tpapp.domain.model.BaseEntity;
 import br.edu.infnet.tpapp.services.IService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 
@@ -17,40 +16,24 @@ public abstract class GenericController<T extends BaseEntity<T>> implements ICon
     }
 
     @Override
-    public ResponseEntity<Void> add(T data) {
-        try {
-            this.service.add(data);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage(), error);
-        }
+    public ResponseEntity<T> get(int id) throws Exception {
+        return ResponseEntity.ok(this.service.get(id));
+    }
+
+    @Override
+    public ResponseEntity<Void> delete(int id) throws Exception {
+        this.service.remove(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<Collection<T>> list() {
-        try {
-            return ResponseEntity.ok(this.service.list());
-        } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error.getMessage(), error);
-        }
+        return ResponseEntity.ok(service.list());
     }
 
     @Override
-    public ResponseEntity<T> get(int id) {
-        try {
-            return ResponseEntity.ok(this.service.get(id));
-        } catch (Exception error) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error.getMessage(), error);
-        }
-    }
-
-    @Override
-    public ResponseEntity<Void> delete(int id) {
-        try {
-            this.service.remove(id);
-            return ResponseEntity.noContent().build();
-        } catch(Exception error) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage(), error);
-        }
+    public ResponseEntity<Void> add(T item) throws Exception {
+        this.service.add(item);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

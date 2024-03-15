@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Customer")
-public class Customer {
+public class Customer extends BaseEntity<Customer> {
 
 	@Id
 	@Column(name = "customerId")
@@ -74,7 +74,7 @@ public class Customer {
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -135,7 +135,8 @@ public class Customer {
          this.createdAt = LocalDate.parse(date,formatter);
 	}
 
-	public boolean compareTo(Customer other) throws InvalidCustomerException {
+	@Override
+	public boolean compareTo(Customer other) throws Exception {
 		if(this.getId() == other.getId())
 			throw new InvalidCustomerException("CustomerId already in use");
 		if(this.getDocument().equals(other.getDocument()))

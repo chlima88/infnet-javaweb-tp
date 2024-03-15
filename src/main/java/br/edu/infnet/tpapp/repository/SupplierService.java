@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 @FeignClient(url = "https://fakestoreapi.com/products", name = "FakeStoreAPI")
-public interface ProductRepository extends IRepository<Product> {
+public interface SupplierService {
 
     @GetMapping(value = "/{id}")
     Optional<Product> getById(@PathVariable int id);

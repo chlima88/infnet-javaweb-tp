@@ -5,9 +5,7 @@ import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.dtos.PurchaseDTO;
 import br.edu.infnet.tpapp.exceptions.*;
-import br.edu.infnet.tpapp.repository.CustomerRepository;
 import br.edu.infnet.tpapp.repository.IRepository;
-import br.edu.infnet.tpapp.repository.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,78 +13,71 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PurchaseService {
+public class PurchaseService  {
 
-    private final PurchaseRepository purchaseRepository;
-    private final CustomerRepository customerRepository;
-    private final IRepository<Product> productRepository;
+    private final IRepository<Purchase> purchaseRepository;
+    private final IService<Customer> customerService;
+    private final IService<Product> productService;
 
     @Autowired
     public PurchaseService(
-            PurchaseRepository purchaseRepository,
-            CustomerRepository customerRepository,
-            IRepository<Product>  productRepository) {
+            IRepository<Purchase> purchaseRepository,
+            IService<Customer> customerService,
+            IService<Product>  productService) {
         this.purchaseRepository = purchaseRepository;
-        this.customerRepository = customerRepository;
-        this.productRepository = productRepository;
+        this.customerService = customerService;
+        this.productService = productService;
     }
 
     public void add(PurchaseDTO purchaseDto) throws Exception {
 
-        if (this.purchaseRepository.getById(purchaseDto.getId()).isPresent())
+        if (this.purchaseRepository.findById(purchaseDto.getId()).isPresent())
             throw new PurchaseServiceException("PurchaseId already in use");
 
-        Customer customer = this.customerRepository.getById(purchaseDto.customerId())
-                .orElseThrow(() -> new CustomerNotFoundException("CustomerId not found"));
+        Customer customer = this.customerService.get(purchaseDto.customerId());
 
         if (!customer.isActive())
             throw new InvalidPurchaseException("Disabled Customer");
 
+        List<Product> products = new ArrayList<>();
         for (int productId : purchaseDto.productsId()) {
-            Product product = this.productRepository.getById(productId)
-                    .orElseThrow(() -> new ProductNotFoundException("ProductId not found"));
+            Product product = this.productService.get(productId);
             if (!product.isActive()) throw new InvalidPurchaseException("Disabled Product");
+            products.add(product);
         }
 
-        this.purchaseRepository.save(purchaseDto);
+        this.purchaseRepository.save(new Purchase(purchaseDto.getId(), customer, products));
     }
 
     public Purchase get(int purchaseDtoId) throws Exception {
-        PurchaseDTO purchaseDTO = this.purchaseRepository.getById(purchaseDtoId)
-                .orElseThrow(() -> new CustomerNotFoundException("CustomerId not found"));
-        return this.loadDto(purchaseDTO);
+        return this.purchaseRepository.findById(purchaseDtoId)
+                .orElseThrow(() -> new PurchaseServiceException("PurchaseId not found"));
     }
 
     public void remove(int purchaseDtoId) throws Exception {
-        this.purchaseRepository.getById(purchaseDtoId)
+        this.purchaseRepository.findById(purchaseDtoId)
                 .orElseThrow(() -> new CustomerNotFoundException("CustomerId not found"));
-        this.purchaseRepository.remove(purchaseDtoId);
+        this.purchaseRepository.deleteById(purchaseDtoId);
     }
 
     public List<Purchase> list()  throws Exception{
 
-        List<Purchase> getAll = new ArrayList<>();
-        for (PurchaseDTO purchaseDTO : this.purchaseRepository.getAll()) {
-            Purchase purchase = this.loadDto(purchaseDTO);
-            getAll.add(purchase);
+        List<Purchase> purchases = new ArrayList<>();
+        for (Purchase purchase : this.purchaseRepository.findAll()) {
+            purchases.add(purchase);
         }
-        return getAll;
+        return purchases;
     }
 
     private Purchase loadDto(PurchaseDTO purchaseDto) throws Exception {
 
-        Customer customer = this.customerRepository.getById(purchaseDto.customerId())
-                .orElseThrow(() -> new CustomerNotFoundException("CustomerId Not found"));
-        List<Product> products = purchaseDto.productsId().stream().map(productId ->
-        {
-            try {
-                return this.productRepository.getById(productId)
-                        .orElseThrow(() -> new ProductNotFoundException("ProductId Not found"));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        Customer customer = this.customerService.get(purchaseDto.customerId());
 
-        }).toList();
+        List<Product> products = new ArrayList<>();
+        for (int productId : purchaseDto.productsId() ){
+            products.add(this.productService.get(productId));
+        }
+
         return new Purchase(purchaseDto.id(), customer, products);
     }
 }

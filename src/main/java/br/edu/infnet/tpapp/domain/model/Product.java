@@ -11,18 +11,20 @@ import java.util.Objects;
 public class Product extends  BaseEntity<Product> {
 
 	@Id
+	@Column(name = "productId")
 	private int id;
 	@Column
 	private String title;
 	@Column
 	private String category;
-	@Column
+
+	@Column(columnDefinition = "text")
 	private String description;
 	@Column
 	private float price;
 	@Column
 	private boolean active;
-	@ManyToMany(mappedBy = "products")
+	@ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
 	private List<Purchase> purchases;
 
 	public Product(){

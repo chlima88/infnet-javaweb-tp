@@ -3,22 +3,20 @@ package br.edu.infnet.tpapp.services;
 import br.edu.infnet.tpapp.domain.model.Customer;
 import br.edu.infnet.tpapp.exceptions.CustomerNotFoundException;
 import br.edu.infnet.tpapp.exceptions.CustomerServiceException;
-import br.edu.infnet.tpapp.repository.CustomerRepository;
-import br.edu.infnet.tpapp.repository.GenericJPARepository;
+import br.edu.infnet.tpapp.repository.IRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 
 @Service
 public class CustomerService implements IService<Customer> {
 
-    private final GenericJPARepository customerRepository;
+    private final IRepository<Customer> customerRepository;
 
     @Autowired
-    public CustomerService(GenericJPARepository repository) {
+    public CustomerService(IRepository<Customer> repository) {
         this.customerRepository = repository;
     }
 

@@ -4,14 +4,16 @@ import br.edu.infnet.tpapp.domain.model.Customer;
 import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.domain.model.Purchase;
 import br.edu.infnet.tpapp.dtos.PurchaseDTO;
-import br.edu.infnet.tpapp.repository.CustomerRepository;
 import br.edu.infnet.tpapp.repository.GenericRepository;
 import br.edu.infnet.tpapp.repository.IRepository;
-import br.edu.infnet.tpapp.repository.PurchaseRepository;
+import br.edu.infnet.tpapp.services.CustomerService;
+import br.edu.infnet.tpapp.services.IService;
+import br.edu.infnet.tpapp.services.ProductService;
 import br.edu.infnet.tpapp.services.PurchaseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -31,15 +33,15 @@ public class PurchaseControllerTest {
     private Customer c1;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
+        IService<Customer> customerService = new CustomerService(new GenericRepository<>());
+        IService<Product> productService = new ProductService(new GenericRepository<>());
 
-        PurchaseRepository purchaseRepository = new PurchaseRepository();
-        CustomerRepository customerRepository = new CustomerRepository();
-        IRepository<Product> productRepository = new GenericRepository<>();
+        IRepository<Purchase> purchaseRepository = new GenericRepository<>();
         PurchaseService purchaseService = new PurchaseService(
                 purchaseRepository,
-                customerRepository,
-                productRepository
+                customerService,
+                productService
         );
         sut = new PurchaseController(purchaseService);
 
@@ -49,15 +51,15 @@ public class PurchaseControllerTest {
         Customer c3 = new Customer(3, "Ricardo Frohlich", "3333", "rf@ecomp.com", "1980-01-01");
         c3.setCreatedAt("2023-01-01");
 
-        customerRepository.save(c1);
-        customerRepository.save(c2);
-        customerRepository.save(c3);
+        customerService.add(c1);
+        customerService.add(c2);
+        customerService.add(c3);
 
         p1 = new Product(1, "Wireless Mouse", "Microsoft", "1850", 79);
         Product p2 = new Product(2, "Monitor", "Dell", "120mhz 4k 29\" Ultra-wide OLED", 1799);
 
-        productRepository.save(p1);
-        productRepository.save(p2);
+        productService.add(p1);
+        productService.add(p2);
 
         purchase = new Purchase(1, c1, List.of(p1, p2));
         purchase2 = new Purchase(2, c2, List.of(p1, p2));

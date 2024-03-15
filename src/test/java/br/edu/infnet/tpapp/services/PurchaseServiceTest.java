@@ -8,18 +8,15 @@ import br.edu.infnet.tpapp.exceptions.CustomerNotFoundException;
 import br.edu.infnet.tpapp.exceptions.InvalidPurchaseException;
 import br.edu.infnet.tpapp.exceptions.ProductNotFoundException;
 import br.edu.infnet.tpapp.exceptions.PurchaseServiceException;
-import br.edu.infnet.tpapp.repository.CustomerRepository;
 import br.edu.infnet.tpapp.repository.GenericRepository;
 import br.edu.infnet.tpapp.repository.IRepository;
-import br.edu.infnet.tpapp.repository.PurchaseRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Description;
 
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,14 +35,14 @@ public class PurchaseServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        PurchaseRepository purchaseRepository = new PurchaseRepository();
-        CustomerRepository customerRepository = new CustomerRepository();
-        IRepository<Product> productRepository = new GenericRepository<>();
+        IService<Customer> customerService = new CustomerService(new GenericRepository<>());
+        IService<Product> productService = new ProductService(new GenericRepository<>());
+        IRepository<Purchase> purchaseRepository = new GenericRepository<>();
 
         sut = new PurchaseService(
                 purchaseRepository,
-                customerRepository,
-                productRepository
+                customerService,
+                productService
         );
 
         c1 = new Customer(1, "Elberth Moraes", "1111", "em@ecomp.com", "1980-01-01");
@@ -54,15 +51,15 @@ public class PurchaseServiceTest {
         Customer c3 = new Customer(3, "Ricardo Frohlich", "3333", "rf@ecomp.com", "1980-01-01");
         c3.setCreatedAt("2023-01-01");
 
-        customerRepository.save(c1);
-        customerRepository.save(c2);
-        customerRepository.save(c3);
+        customerService.add(c1);
+        customerService.add(c2);
+        customerService.add(c3);
 
         p1 = new Product(1, "Wireless Mouse", "Microsoft", "1850", 79);
         Product p2 = new Product(2, "Monitor", "Dell", "120mhz 4k 29\" Ultra-wide OLED", 1799);
 
-        productRepository.save(p1);
-        productRepository.save(p2);
+        productService.add(p1);
+        productService.add(p2);
 
         purchase = new Purchase(1, c1, List.of(p1, p2));
         purchase2 = new Purchase(2, c2, List.of(p1, p2));
@@ -70,7 +67,6 @@ public class PurchaseServiceTest {
         purchaseDTO = new PurchaseDTO(1, 1, List.of(1, 2));
         purchaseDTO2 = new PurchaseDTO(2, 2, List.of(1, 2));
     }
-
 
     @Test
     @DisplayName("Should create a purchase")
