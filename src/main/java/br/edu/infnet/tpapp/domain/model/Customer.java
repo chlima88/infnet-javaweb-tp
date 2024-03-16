@@ -32,8 +32,10 @@ public class Customer extends BaseEntity<Customer> {
 	@OneToMany(mappedBy = "customer")
 	private List<Purchase> purchases;
 
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
 	public Customer() {
-		this.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		this.setCreatedAt(LocalDate.now().format(dateFormatter));
 	}
 	
 	public Customer(int id, String name, String document, String email, String birthday) {
@@ -112,8 +114,7 @@ public class Customer extends BaseEntity<Customer> {
 	}
 	
 	public String getBirthday() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return this.birthday.format(formatter);
+        return this.birthday.format(dateFormatter);
 	}
 
 	public CustomerRank getRank() {
@@ -121,18 +122,15 @@ public class Customer extends BaseEntity<Customer> {
 	}
 	
 	public void setBirthday(String date) {
-         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-         this.birthday = LocalDate.parse(date,formatter);
+         this.birthday = LocalDate.parse(date,dateFormatter);
 	}
 	
 	public String getCreatedAt() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return this.createdAt.format(formatter);
+        return this.createdAt.format(dateFormatter);
 	}
 	
 	public void setCreatedAt(String date) {
-         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-         this.createdAt = LocalDate.parse(date,formatter);
+         this.createdAt = LocalDate.parse(date,dateFormatter);
 	}
 
 	@Override

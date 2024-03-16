@@ -56,7 +56,7 @@ public class PurchaseService  {
 
     public void remove(int purchaseDtoId) throws Exception {
         this.purchaseRepository.findById(purchaseDtoId)
-                .orElseThrow(() -> new CustomerNotFoundException("CustomerId not found"));
+                .orElseThrow(() -> new PurchaseServiceException("PurchaseId not found"));
         this.purchaseRepository.deleteById(purchaseDtoId);
     }
 
@@ -69,15 +69,4 @@ public class PurchaseService  {
         return purchases;
     }
 
-    private Purchase loadDto(PurchaseDTO purchaseDto) throws Exception {
-
-        Customer customer = this.customerService.get(purchaseDto.customerId());
-
-        List<Product> products = new ArrayList<>();
-        for (int productId : purchaseDto.productsId() ){
-            products.add(this.productService.get(productId));
-        }
-
-        return new Purchase(purchaseDto.id(), customer, products);
-    }
 }
