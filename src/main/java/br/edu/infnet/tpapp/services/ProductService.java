@@ -4,7 +4,6 @@ import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.exceptions.ProductNotFoundException;
 import br.edu.infnet.tpapp.exceptions.ProductServiceException;
 import br.edu.infnet.tpapp.repository.IRepository;
-import br.edu.infnet.tpapp.repository.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,11 @@ public class ProductService implements IService<Product> {
     @Autowired
     public ProductService(IRepository<Product> repository) {
         this.productRepository = repository;
+    }
+
+    public ProductService(IRepository<Product> repository, SupplierService supplierService) {
+        this.productRepository = repository;
+        this.supplierService = supplierService;
     }
 
     @Override
@@ -72,6 +76,7 @@ public class ProductService implements IService<Product> {
     public Product orderSupplier(int productId) throws Exception {
         Product product = this.supplierService.getById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("ProductId not found"));
+        product.deactivate();
         this.productRepository.save(product);
         return product;
     }

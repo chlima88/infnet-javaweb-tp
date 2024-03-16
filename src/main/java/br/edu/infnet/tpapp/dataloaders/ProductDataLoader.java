@@ -2,7 +2,7 @@ package br.edu.infnet.tpapp.dataloaders;
 
 import br.edu.infnet.tpapp.domain.model.Product;
 import br.edu.infnet.tpapp.repository.ProductJPARepository;
-import br.edu.infnet.tpapp.repository.SupplierService;
+import br.edu.infnet.tpapp.services.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
